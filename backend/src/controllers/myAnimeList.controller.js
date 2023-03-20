@@ -2,7 +2,7 @@ const programmingLanguages = require('../services/myAnimeList.service');
 
 async function get(req, res, next) {
   try {
-    res.json(await programmingLanguages.getMultiple(req.query.page));
+    res.json(await programmingLanguages.get(req.query));
   } catch (err) {
     console.error(`Error while getting programming languages`, err.message);
     next(err);
