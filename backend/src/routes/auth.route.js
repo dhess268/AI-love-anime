@@ -1,18 +1,15 @@
+// routes/auth.js
 const express = require('express');
 
 const router = express.Router();
-const myAnimeListController = require('../controllers/myAnimeList.controller');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
-/* GET programming languages. */
-router.get('/', myAnimeListController.get);
+const auth = require('../controllers/auth.controller');
 
-/* POST programming language */
-router.post('/', myAnimeListController.create);
-
-/* PUT programming language */
-router.put('/:id', myAnimeListController.update);
-
-/* DELETE programming language */
-router.delete('/:id', myAnimeListController.remove);
+/* POST login. */
+router.post('/login', (req, res, next) => {
+  auth.login(req);
+});
 
 module.exports = router;
