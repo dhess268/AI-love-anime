@@ -1,16 +1,20 @@
+import axios from 'axios';
 import { useState } from 'react';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  function handleLogin() {
-    console.log('logged in!');
+  async function handleLogin(event) {
+    event.preventDefault();
+
+    const data = await axios.get('http://localhost:3001/myanimelist');
+    console.log(data);
   }
 
   return (
     <section>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={(e) => handleLogin(e)}>
         <div>
           <label htmlFor="username">Username</label>
           <input
@@ -31,6 +35,7 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        <button type="submit">Login</button>
       </form>
     </section>
   );
