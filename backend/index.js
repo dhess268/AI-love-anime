@@ -1,6 +1,9 @@
 const express = require('express');
+const connectDB = require('./src/configs/db');
 
 const app = express();
+
+connectDB();
 
 const myAnimeListRouter = require('./src/routes/myAnimeList.route');
 const authRouter = require('./src/routes/auth.route');
