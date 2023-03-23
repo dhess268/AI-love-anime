@@ -8,7 +8,10 @@ export default function Login() {
   async function handleLogin(event) {
     event.preventDefault();
 
-    const data = await axios.get('http://localhost:3001/myanimelist');
+    const data = await axios.post('http://localhost:3001/login', {
+      username, // varEmail is a variable which holds the email
+      password,
+    });
     console.log(data);
   }
 
