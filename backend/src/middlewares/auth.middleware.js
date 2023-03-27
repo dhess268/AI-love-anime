@@ -11,7 +11,7 @@ const LocalStrategy = passportLocal.Strategy;
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
-const UserModel = require('../models/User');
+const User = require('../models/User');
 
 passport.use(
   new LocalStrategy(
@@ -19,9 +19,8 @@ passport.use(
       usernameField: 'username',
       passwordField: 'password',
     },
-    (username, password, cb) =>
-      // this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
-      UserModel.findOne({ username, password })
+    (username, password, cb) => {
+      User.findOne({ username, password })
         .then((user) => {
           if (!user) {
             return cb(null, false, {
@@ -30,7 +29,9 @@ passport.use(
           }
           return cb(null, user, { message: 'Logged In Successfully' });
         })
-        .catch((err) => cb(err))
+        .catch((err) => cb(err));
+    }
+    // this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
   )
 );
 
@@ -42,7 +43,7 @@ passport.use(
     },
     (jwtPayload, cb) =>
       // find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-      UserModel.findOneById(jwtPayload.id)
+      User.findOneById(jwtPayload.id)
         .then((user) => cb(null, user))
         .catch((err) => cb(err))
   )

@@ -1,7 +1,10 @@
 const express = require('express');
 const connectDB = require('./src/configs/db');
+require('./src/middlewares/auth.middleware');
 
 const app = express();
+
+app.use(express.json());
 
 connectDB();
 
