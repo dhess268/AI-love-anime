@@ -5,11 +5,9 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
-const auth = require('../controllers/auth.controller');
+const authController = require('../controllers/auth.controller');
 
 /* POST login. */
-router.post('/login', (req, res, next) => {
-  auth.login(req);
-});
+router.post('/login', authController.login);
 
 module.exports = router;
