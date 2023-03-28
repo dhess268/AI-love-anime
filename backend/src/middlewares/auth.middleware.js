@@ -16,22 +16,20 @@ const User = require('../models/User');
 passport.use(
   new LocalStrategy(
     {
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
     },
-    (username, password, cb) => {
-      User.findOne({ username, password })
-        .then((user) => {
-          if (!user) {
-            return cb(null, false, {
-              message: 'Incorrect username or password.',
-            });
-          }
-          return cb(null, user, { message: 'Logged In Successfully' });
-        })
-        .catch((err) => cb(err));
+    (email, password, done) => {
+      User.findOne({ email }).exec((err, user) => {
+        if (err) {
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false);
+        }
+        return done(null, user);
+      });
     }
-    // this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
   )
 );
 

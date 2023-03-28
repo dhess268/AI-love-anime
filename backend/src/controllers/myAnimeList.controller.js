@@ -11,7 +11,7 @@ async function get(req, res, next) {
 
 async function create(req, res, next) {
   try {
-    res.json(await myAnimeList.create(req.body));
+    await myAnimeList.create(req.body);
   } catch (err) {
     console.error(`Error while creating programming language`, err.message);
     next(err);
