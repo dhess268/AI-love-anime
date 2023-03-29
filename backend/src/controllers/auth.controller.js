@@ -1,28 +1,31 @@
-const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const auth = require('../services/auth.service');
+const keys = require('../configs/keys');
 
-async function login(req, res, next) {
-  passport.authenticate('local', { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(400).json({
-        message: info,
-        user,
-      });
-    }
-
-    req.login(user, { session: false }, (err) => {
-      if (err) {
-        res.send(err);
-      }
-
-      // generate a signed son web token with the contents of user object and return it in the response
-      const token = jwt.sign(user, 'your_jwt_secret');
-      return res.json({ user, token });
+async function loginUser(req, res, next) {
+  if (!req.user) {
+    return res.status(401).json({
+      status: 'failure',
+      user: req.user,
     });
-  })(req, res, next);
+  }
+  // generate a signed son web token with the contents of user object and return it in the response
+  const token = jwt.sign(req.user.toJSON(), keys.JWT_SECRET, {
+    expiresIn: keys.JWT_EXPIRES_IN,
+  });
+
+  const userSafeToReturn = {
+    id: req.user.id,
+    email: req.user.email,
+    avatar: req.user.avatar,
+  };
+
+  return res.json({
+    status: 'success',
+    token,
+    user: userSafeToReturn,
+  });
 }
 
 module.exports = {
-  login,
+  loginUser,
 };

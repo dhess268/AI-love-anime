@@ -19,23 +19,20 @@ passport.use(
       usernameField: 'email',
       passwordField: 'password',
     },
-    (email, password, cb) =>
-      // this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
+    (email, password, cb) => {
+      // should put the below database query into a service...
+      User.findOne({ email })
+        .then((user) => {
+          if (!user) {
+            return cb(null, false, {
+              message: 'Incorrect email or password.',
+            });
+          }
 
-      {
-        User.findOne({ email })
-          .then((user) => {
-            console.log(user);
-            if (!user) {
-              return cb(null, false, {
-                message: 'Incorrect email or password.',
-              });
-            }
-
-            return cb(null, user, { message: 'Logged In Successfully' });
-          })
-          .catch((err) => cb(err));
-      }
+          return cb(null, user, { message: 'Logged In Successfully' });
+        })
+        .catch((err) => cb(err));
+    }
   )
 );
 
