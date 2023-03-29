@@ -1,17 +1,17 @@
-const programmingLanguages = require('../services/myAnimeList.service');
+const myAnimeList = require('../services/myAnimeList.service');
 
 async function get(req, res, next) {
   try {
-    res.json(await programmingLanguages.get(req.query));
+    res.json(await myAnimeList.get(req.query));
   } catch (err) {
-    console.error(`Error while getting programming languages`, err.message);
+    console.error(`Error while getting anime list`, err.message);
     next(err);
   }
 }
 
 async function create(req, res, next) {
   try {
-    res.json(await programmingLanguages.create(req.body));
+    await myAnimeList.create(req.body);
   } catch (err) {
     console.error(`Error while creating programming language`, err.message);
     next(err);
@@ -20,7 +20,7 @@ async function create(req, res, next) {
 
 async function update(req, res, next) {
   try {
-    res.json(await programmingLanguages.update(req.params.id, req.body));
+    res.json(await myAnimeList.update(req.params.id, req.body));
   } catch (err) {
     console.error(`Error while updating programming language`, err.message);
     next(err);
@@ -29,7 +29,7 @@ async function update(req, res, next) {
 
 async function remove(req, res, next) {
   try {
-    res.json(await programmingLanguages.remove(req.params.id));
+    res.json(await myAnimeList.remove(req.params.id));
   } catch (err) {
     console.error(`Error while deleting programming language`, err.message);
     next(err);

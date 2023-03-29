@@ -11,7 +11,12 @@ function emptyOrRows(rows) {
   return rows;
 }
 
+function validateRegistrationInputs(email, username, password) {
+  return email && password && username;
+}
+
 module.exports = {
   getOffset,
   emptyOrRows,
+  validateRegistrationInputs,
 };
