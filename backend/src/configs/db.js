@@ -3,9 +3,11 @@ require('dotenv').config();
 // const mongoConnection = process.env.ATLAS_URI
 const keys = require('./keys');
 
+mongoose.set('strictQuery', true);
+
 const connectDB = async () => {
   try {
-    await mongoose.connect(keys.MONGODB_URI, {
+    mongoose.connect(keys.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
