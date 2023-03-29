@@ -56,6 +56,7 @@ async function createUser(req, res, next) {
       const token = jwt.sign(newUser.toJSON(), keys.JWT_SECRET, {
         expiresIn: keys.JWT_EXPIRES_IN,
       });
+
       res.status(201).send({ status: 'success', token, user: { email } });
     })
     .catch((err) => {
