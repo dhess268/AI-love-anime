@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 
 const { Schema } = mongoose;
 
@@ -19,7 +19,6 @@ UserSchema.methods.setPassword = function (password) {
 };
 
 UserSchema.methods.validPassword = function (password) {
-  // this.salt = crypto.randomBytes(16).toString('hex');
   const hash = crypto
     .pbkdf2Sync(password, this.salt, 1000, 64, 'sha512')
     .toString('hex');

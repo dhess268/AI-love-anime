@@ -14,7 +14,8 @@ router.post('/login', requireSignin, authController.loginUser);
 // test route
 router.get('/login', sayHi);
 
-router.post('register', )
+router.post('/register', authController.createUser);
+
 function sayHi(req, res) {
   res.send('hihi');
 }
