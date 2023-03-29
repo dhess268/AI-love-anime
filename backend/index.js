@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const session = require('express-session');
+const cors = require('cors');
 const connectDB = require('./src/configs/db');
 const User = require('./src/models/User');
 
