@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const session = require('express-session');
+const cors = require('cors');
 const connectDB = require('./src/configs/db');
 const User = require('./src/models/User');
 
@@ -31,6 +32,8 @@ connectDB();
 
 const myAnimeListRouter = require('./src/routes/myAnimeList.route');
 const authRouter = require('./src/routes/auth.route');
+
+app.use(cors());
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>');
