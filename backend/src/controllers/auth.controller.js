@@ -16,9 +16,7 @@ async function loginUser(req, res, next) {
   });
 
   const userSafeToReturn = {
-    id: req.user.id,
     email: req.user.email,
-    avatar: req.user.avatar,
   };
 
   return res.json({
@@ -52,10 +50,14 @@ async function createUser(req, res, next) {
   // save to database
   newUser
     .save()
-    .then(() =>
+    .then(() => {
       // return 201 if successful
-      res.status(201).send({ status: 'success' })
-    )
+      // generate a signed son web token with the contents of user object and return it in the response
+      const token = jwt.sign(newUser.toJSON(), keys.JWT_SECRET, {
+        expiresIn: keys.JWT_EXPIRES_IN,
+      });
+      res.status(201).send({ status: 'success', token, user: { email } });
+    })
     .catch((err) => {
       res.status(500).send({ status: 'failureInCreation?' });
     });
