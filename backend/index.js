@@ -35,11 +35,13 @@ const authRouter = require('./src/routes/auth.route');
 
 app.use(cors());
 
+const requireSignin = passport.authenticate('jwt', { session: false });
+
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>');
 });
 
-app.use('/myAnimeList', myAnimeListRouter);
+app.use('/myAnimeList', requireSignin, myAnimeListRouter);
 
 app.use('/auth', authRouter);
 

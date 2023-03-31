@@ -1,10 +1,10 @@
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
+// needs to be used for database requests
+
 async function login(username, password, req, res) {
-  // console.log('inside the service file');
   // passport.authenticate('local', { session: false }, (err, user, info) => {
-  //   console.log('inside authenticate');
   //   if (err || !user) {
   //     return res.status(400).json({
   //       message: 'Something is not right',

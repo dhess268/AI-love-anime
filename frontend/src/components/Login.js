@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useState } from 'react';
 
+import { axiosAuth } from '../utils/axios.util';
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

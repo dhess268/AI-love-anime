@@ -3,6 +3,7 @@ const axios = require('axios');
 
 const helper = require('../utils/helper.util').default;
 const config = require('../configs/general.config');
+const Anime = require('../models/Anime');
 
 async function getMultiple(page = 1) {
   // const offset = helper.getOffset(page, config.listPerPage);
@@ -74,17 +75,47 @@ async function remove(id) {
   // return { message };
 }
 
-async function get(username) {
-  console.log(config);
-  const result = await axios
-    .get(config.myAnimeListUrl, {
-      headers: {
-        'X-MAL-CLIENT-ID': '9dfc847e8513a45e3590df53abdfef46',
-      },
-    })
-    .then((res) => res.data.data);
+// gets the entire MAL list and saves it to the user
+async function get(username, user) {
+  const queryParams = `/${username}/animelist?status=completed&fields=list_status&limit=100&sort=list_score`;
+  let nextPage = config.myAnimeListUrl + queryParams;
 
-  return result;
+  do {
+    const result = await axios
+      .get(nextPage, {
+        headers: {
+          'X-MAL-CLIENT-ID': '9dfc847e8513a45e3590df53abdfef46',
+        },
+      })
+      .then((res) => res.data)
+      .catch((err) => {
+        console.log(err);
+      });
+
+    result.data.forEach((entry) => {
+      const newAnime = new Anime();
+      newAnime.malId = entry.node.id;
+      newAnime.title = entry.node.title;
+      newAnime.score = entry.list_status.score;
+      newAnime
+        .save()
+        .then()
+        .catch((err) => console.log(err));
+      user.anime.push(newAnime);
+    });
+
+    // from mal api this is always a string or undefined
+    nextPage = result.paging.next;
+  } while (nextPage);
+
+  // user.Anime.create({ anime: animeList });
+
+  await user
+    .save()
+    .then()
+    .catch((error) => console.log(error));
+
+  return { success: true };
 }
 
 module.exports = {

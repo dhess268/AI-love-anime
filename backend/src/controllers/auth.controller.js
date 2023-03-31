@@ -10,6 +10,7 @@ async function loginUser(req, res, next) {
       user: req.user,
     });
   }
+
   // generate a signed son web token with the contents of user object and return it in the response
   const token = jwt.sign(req.user.toJSON(), keys.JWT_SECRET, {
     expiresIn: keys.JWT_EXPIRES_IN,
@@ -53,11 +54,13 @@ async function createUser(req, res, next) {
     .then(() => {
       // return 201 if successful
       // generate a signed son web token with the contents of user object and return it in the response
-      const token = jwt.sign(newUser.toJSON(), keys.JWT_SECRET, {
-        expiresIn: keys.JWT_EXPIRES_IN,
-      });
+      // const token = jwt.sign(newUser.toJSON(), keys.JWT_SECRET, {
+      //   expiresIn: keys.JWT_EXPIRES_IN,
+      // });
 
-      res.status(201).send({ status: 'success', token, user: { email } });
+      const userWithToken = newUser.toJSON();
+
+      res.status(201).send({ status: 'success', data: userWithToken });
     })
     .catch((err) => {
       res.status(500).send({ status: 'failureInCreation?' });
