@@ -5,7 +5,12 @@ async function get(req, res, next) {
     if (!req.query?.username) {
       return res.status(400).send({ success: false });
     }
-    return res.json(await myAnimeList.get(req.query.username, req.user));
+
+    if (await myAnimeList.get(req.query.username, req.user)) {
+      return res.status(200).send({ success: true });
+    }
+
+    return res.status(404).send({ success: false });
   } catch (err) {
     console.error(`Error while getting anime list`, err.message);
     next(err);

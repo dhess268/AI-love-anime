@@ -79,7 +79,7 @@ async function remove(id) {
 async function get(username, user) {
   const queryParams = `/${username}/animelist?status=completed&fields=list_status&limit=100&sort=list_score`;
   let nextPage = config.myAnimeListUrl + queryParams;
-
+  const success = true;
   do {
     const result = await axios
       .get(nextPage, {
@@ -91,6 +91,10 @@ async function get(username, user) {
       .catch((err) => {
         console.log(err);
       });
+
+    if (!result) {
+      return false;
+    }
 
     result.data.forEach((entry) => {
       const newAnime = new Anime();
@@ -108,14 +112,12 @@ async function get(username, user) {
     nextPage = result.paging.next;
   } while (nextPage);
 
-  // user.Anime.create({ anime: animeList });
-
   await user
     .save()
     .then()
     .catch((error) => console.log(error));
 
-  return { success: true };
+  return true;
 }
 
 module.exports = {
