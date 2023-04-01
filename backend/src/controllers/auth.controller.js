@@ -6,7 +6,7 @@ const User = require('../models/User');
 async function loginUser(req, res, next) {
   if (!req.user) {
     return res.status(401).json({
-      status: 'failure',
+      success: false,
       user: req.user,
     });
   }
@@ -21,7 +21,7 @@ async function loginUser(req, res, next) {
   };
 
   return res.json({
-    status: 'success',
+    success: true,
     token,
     user: userSafeToReturn,
   });
@@ -32,14 +32,14 @@ async function createUser(req, res, next) {
   const { email, username, password } = req.body;
 
   if (!utils.validateRegistrationInputs(email, username, password)) {
-    res.status(400).send({ status: 'failure' });
+    res.status(400).send({ success: false });
   }
 
   // email must be unique. I decided not to sent this to an alternate function for lower initial development time. It was easier to debug in the same function like this.
   const duplicateEmail = await User.findOne({ email }).then((user) => user);
 
   if (duplicateEmail) {
-    return res.status(409).send({ status: 'failure' });
+    return res.status(409).send({ success: false });
   }
 
   // create new user document from schema
@@ -60,10 +60,10 @@ async function createUser(req, res, next) {
 
       const userWithToken = newUser.toJSON();
 
-      res.status(201).send({ status: 'success', data: userWithToken });
+      res.status(201).send({ success: true, data: userWithToken });
     })
     .catch((err) => {
-      res.status(500).send({ status: 'failureInCreation?' });
+      res.status(500).send({ success: false });
     });
 }
 

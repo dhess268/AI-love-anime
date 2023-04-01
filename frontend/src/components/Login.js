@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { Button } from '@mui/material';
 import { useState } from 'react';
 
 import { axiosAuth } from '../utils/axios.util';
@@ -20,7 +20,7 @@ export default function Login() {
       return;
     }
 
-    const data = await axios.post('http://localhost:3001/auth/login', {
+    const data = await axiosAuth.post('/auth/login', {
       email, // varEmail is a variable which holds the email
       password,
     });
