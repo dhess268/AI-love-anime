@@ -8,6 +8,9 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      return;
+    }
     try {
       axiosAuth.get('/api/user').then((data) => {
         setUser((prevUser) => ({ ...prevUser, ...data.data }));
