@@ -9,17 +9,29 @@ import IconButton from '@mui/material/IconButton';
 import { axiosAuth } from '../utils/axios.util';
 
 import LoginModal from '../Modals/LoginModal';
+import RegisterModal from '../Modals/RegisterModal';
 
 export default function Header() {
   const [openLogin, setOpenLogin] = useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
   const [modalError, setModalError] = useState('');
 
-  function handleOpen() {
+  function handleOpenLogin() {
     setOpenLogin(true);
     setModalError('');
   }
-  function handleClose() {
+  function handleCloseLogin() {
     setOpenLogin(false);
+    setModalError('');
+  }
+
+  function handleOpenRegister() {
+    setOpenRegister(true);
+    setModalError('');
+  }
+
+  function handleCloseRegister() {
+    setOpenRegister(false);
     setModalError('');
   }
 
@@ -31,10 +43,30 @@ export default function Header() {
       });
 
       localStorage.setItem('token', data.data.token);
-      handleClose();
+      handleCloseLogin();
     } catch (error) {
       console.log(error);
       setModalError('Incorrect Email or Password. Please try again.');
+    }
+  }
+
+  async function handleRegister(email, password) {
+    try {
+      const data = await axiosAuth.post('/auth/register', {
+        email,
+        password,
+        username: 'DEFAULT',
+      });
+
+      localStorage.setItem('token', data.data.token);
+      handleCloseRegister();
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 409) {
+        setModalError('The email you entered is already in use. ');
+      } else {
+        setModalError('An error has occured please try again.');
+      }
     }
   }
 
@@ -51,21 +83,28 @@ export default function Header() {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           AI Love Anime
         </Typography>
-        <Button color="inherit" onClick={() => handleOpen()}>
+        <Button color="inherit" onClick={() => handleOpenLogin()}>
           Login
         </Button>
         <span>|</span>
-        <Button color="inherit" onClick={() => handleOpen()}>
+        <Button color="inherit" onClick={() => handleOpenRegister()}>
           Register
         </Button>
       </Toolbar>
 
       <LoginModal
         open={openLogin}
-        onClose={() => handleClose()}
+        onClose={() => handleCloseLogin()}
         handleLogin={(email, password) => handleLogin(email, password)}
         error={modalError}
-        handleClose={() => handleClose()}
+        handleClose={() => handleCloseLogin()}
+      />
+      <RegisterModal
+        open={openRegister}
+        onClose={() => handleCloseRegister()}
+        handleRegister={(email, password) => handleRegister(email, password)}
+        error={modalError}
+        handleClose={() => handleCloseRegister()}
       />
     </AppBar>
   );

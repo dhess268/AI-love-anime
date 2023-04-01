@@ -32,7 +32,7 @@ async function createUser(req, res, next) {
   const { email, username, password } = req.body;
 
   if (!utils.validateRegistrationInputs(email, username, password)) {
-    res.status(400).send({ success: false });
+    return res.status(400).send({ success: false });
   }
 
   // email must be unique. I decided not to sent this to an alternate function for lower initial development time. It was easier to debug in the same function like this.
@@ -60,11 +60,9 @@ async function createUser(req, res, next) {
 
       const userWithToken = newUser.toJSON();
 
-      res.status(201).send({ success: true, data: userWithToken });
+      return res.status(201).send({ success: true, data: userWithToken });
     })
-    .catch((err) => {
-      res.status(500).send({ success: false });
-    });
+    .catch((err) => res.status(500).send({ success: false }));
 }
 
 module.exports = {

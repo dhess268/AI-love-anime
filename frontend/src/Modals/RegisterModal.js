@@ -1,20 +1,37 @@
 import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import { PropTypes } from 'prop-types';
-import { useState } from 'react';
-import './LoginModal.css';
+import { useEffect, useState } from 'react';
+import { validatePasswords } from '../utils/inputValidation';
+import './RegisterModal.css';
 
-export default function LoginModal({
+export default function RegisterModal({
   open,
-  handleLogin,
+  onClose,
+  handleRegister,
   error,
   handleClose,
-  onClose,
 }) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [passwordsAreEqual, setPasswordsAreEqual] = useState(true);
+
+  useEffect(() => {
+    setPasswordsAreEqual(validatePasswords(password1, password2));
+  }, [password1, password2]);
 
   function handleSubmitClick() {
-    handleLogin(email, password);
+    handleRegister(email, password1);
+  }
+
+  function renderError() {
+    if (error) {
+      return error;
+    }
+    if (!passwordsAreEqual && password2 && password2) {
+      return 'Passwords must match.';
+    }
+    return '';
   }
 
   return (
@@ -26,14 +43,13 @@ export default function LoginModal({
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Login
+          Register
         </Typography>
 
         <br />
 
         <TextField
           // doing !!error fixes a react error where the error prop only wants booleans but i am passing a string. !! converts to a boolean from a truthy or falsy value
-          error={!!error}
           label="Email"
           variant="outlined"
           className="modal__input"
@@ -44,21 +60,37 @@ export default function LoginModal({
         <br />
 
         <TextField
-          error={!!error}
+          error={!passwordsAreEqual && !!(password1 && password2)}
           label="Password"
           variant="outlined"
           className="modal__input"
           type="password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword1(e.target.value);
+          }}
         />
-        <span className="error__message">{error}</span>
+
+        <br />
+
+        <TextField
+          error={!passwordsAreEqual && !!(password2 && password2)}
+          label="Enter password again"
+          variant="outlined"
+          className="modal__input"
+          type="password"
+          onChange={(e) => {
+            setPassword2(e.target.value);
+          }}
+        />
+
+        <span className="error__message">{renderError()}</span>
 
         <div className="button__wrapper">
           <Button
             variant="contained"
             className="modal__button"
             onClick={() => handleSubmitClick()}
-            disabled={!(email && password)}
+            disabled={!(email && password1 && password2 && passwordsAreEqual)}
           >
             Submit
           </Button>
@@ -76,11 +108,11 @@ export default function LoginModal({
   );
 }
 
-LoginModal.propTypes = {
+RegisterModal.propTypes = {
   open: PropTypes.bool,
-  handleLogin: PropTypes.func,
-  handleClose: PropTypes.func,
   onClose: PropTypes.func,
+  handleRegister: PropTypes.func,
+  handleClose: PropTypes.func,
   error: PropTypes.string,
 };
 
