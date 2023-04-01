@@ -6,12 +6,13 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import './Header.css';
 
+import { PropTypes } from 'prop-types';
 import { axiosAuth } from '../utils/axios.util';
 
 import LoginModal from '../Modals/LoginModal';
 import RegisterModal from '../Modals/RegisterModal';
 
-export default function Header() {
+export default function Header({ loggedIn, logout }) {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const [modalError, setModalError] = useState('');
@@ -35,13 +36,16 @@ export default function Header() {
     setModalError('');
   }
 
+  function handleLogout() {
+    logout();
+  }
+
   async function handleLogin(email, password) {
     try {
       const data = await axiosAuth.post('/auth/login', {
         email,
         password,
       });
-
       localStorage.setItem('token', data.data.token);
       handleCloseLogin();
     } catch (error) {
@@ -57,8 +61,8 @@ export default function Header() {
         password,
         username: 'DEFAULT',
       });
-
-      localStorage.setItem('token', data.data.token);
+      // note: I want to synchronize my sever returns. For registration its email, id, token and login its just token
+      localStorage.setItem('token', data.data.data.token);
       handleCloseRegister();
     } catch (error) {
       console.log(error);
@@ -83,21 +87,33 @@ export default function Header() {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           AI Love Anime
         </Typography>
-        <Button
-          color="inherit"
-          onClick={() => handleOpenLogin()}
-          className="header__button"
-        >
-          Login
-        </Button>
-        <span className="header__divider">|</span>
-        <Button
-          color="inherit"
-          onClick={() => handleOpenRegister()}
-          className="header__button"
-        >
-          Register
-        </Button>
+        {!loggedIn ? (
+          <>
+            <Button
+              color="inherit"
+              onClick={() => handleOpenLogin()}
+              className="header__button"
+            >
+              Login
+            </Button>
+            <span className="header__divider">|</span>
+            <Button
+              color="inherit"
+              onClick={() => handleOpenRegister()}
+              className="header__button"
+            >
+              Register
+            </Button>
+          </>
+        ) : (
+          <Button
+            color="inherit"
+            onClick={() => handleLogout()}
+            className="header__button"
+          >
+            Logout
+          </Button>
+        )}
       </Toolbar>
 
       <LoginModal
@@ -117,3 +133,8 @@ export default function Header() {
     </AppBar>
   );
 }
+
+Header.propTypes = {
+  loggedIn: PropTypes.bool,
+  logout: PropTypes.func,
+};
