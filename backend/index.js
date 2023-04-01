@@ -32,6 +32,7 @@ connectDB();
 
 const myAnimeListRouter = require('./src/routes/myAnimeList.route');
 const authRouter = require('./src/routes/auth.route');
+const userRouter = require('./src/routes/user.route');
 
 app.use(cors());
 
@@ -44,6 +45,8 @@ app.get('/', (request, response) => {
 app.use('/myAnimeList', requireSignin, myAnimeListRouter);
 
 app.use('/auth', authRouter);
+
+app.use('/api/user', requireSignin, userRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {
