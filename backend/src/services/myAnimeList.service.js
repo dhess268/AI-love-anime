@@ -93,16 +93,13 @@ async function update(username, user) {
   return true;
 }
 
-async function remove(id) {
-  // const result = await db.query(
-  //   `DELETE FROM programming_languages WHERE id=?`,
-  //   [id]
-  // );
-  // let message = 'Error in deleting programming language';
-  // if (result.affectedRows) {
-  //   message = 'Programming language deleted successfully';
-  // }
-  // return { message };
+async function remove(userId) {
+  await User.findOneAndUpdate(
+    { _id: userId },
+    { $unset: { anime: 1 } },
+    { new: true }
+  );
+  return true;
 }
 
 module.exports = {
