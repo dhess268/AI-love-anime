@@ -1,0 +1,12 @@
+button.modal__button {
+  margin-top: .5em;
+}
+
+button.modal__button:first-of-type {
+  margin-right: 1em;
+}
+
+span.error__message {
+  color: red;
+  min-height: 1.5em;
+}

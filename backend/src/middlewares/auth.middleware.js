@@ -9,7 +9,7 @@ const keys = require('../configs/keys');
 
 const LocalStrategy = passportLocal.Strategy;
 const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
+const { ExtractJwt } = passportJWT;
 
 const User = require('../models/User');
 
@@ -19,37 +19,44 @@ passport.use(
       usernameField: 'email',
       passwordField: 'password',
     },
-    (email, password, cb) => {
+    (email, password, cb) =>
       // should put the below database query into a service...
-      User.findOne({ email })
-        .then((user) => {
-          if (!user) {
-            return cb(null, false, {
-              message: 'Incorrect email.',
-            });
-          }
+      {
+        User.findOne({ email })
+          .then((user) => {
+            if (!user) {
+              return cb(null, false, {
+                message: 'Incorrect email.',
+              });
+            }
 
-          if (!user.validPassword(password)) {
-            return cb(null, false, { message: 'Incorrect password.' });
-          }
+            if (!user.validPassword(password)) {
+              return cb(null, false, { message: 'Incorrect password.' });
+            }
 
-          return cb(null, user, { message: 'Logged In Successfully' });
-        })
-        .catch((err) => cb(err));
-    }
+            return cb(null, user, { message: 'Logged In Successfully' });
+          })
+          .catch((err) => cb(err));
+      }
   )
 );
 
 passport.use(
   new JWTStrategy(
     {
-      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: keys.JWT_SECRET,
     },
-    (jwtPayload, cb) =>
+    (jwtPayload, cb) => {
       // find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-      User.findOneById(jwtPayload.id)
-        .then((user) => cb(null, user))
-        .catch((err) => cb(err))
+      User.findById(jwtPayload._id)
+        .then((user) => {
+          if (!user) {
+            cb(null, false);
+          }
+          cb(null, user);
+        })
+        .catch((err) => cb(err, false));
+    }
   )
 );

@@ -2,7 +2,15 @@ const myAnimeList = require('../services/myAnimeList.service');
 
 async function get(req, res, next) {
   try {
-    res.json(await myAnimeList.get(req.query));
+    if (!req.query?.username) {
+      return res.status(400).send({ success: false });
+    }
+
+    if (await myAnimeList.get(req.query.username, req.user)) {
+      return res.status(200).send({ success: true });
+    }
+
+    return res.status(404).send({ success: false });
   } catch (err) {
     console.error(`Error while getting anime list`, err.message);
     next(err);
