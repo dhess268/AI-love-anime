@@ -1,10 +1,10 @@
 import { useState } from 'react';
-
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import './Header.css';
 
 import { axiosAuth } from '../utils/axios.util';
 
@@ -83,11 +83,19 @@ export default function Header() {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           AI Love Anime
         </Typography>
-        <Button color="inherit" onClick={() => handleOpenLogin()}>
+        <Button
+          color="inherit"
+          onClick={() => handleOpenLogin()}
+          className="header__button"
+        >
           Login
         </Button>
-        <span>|</span>
-        <Button color="inherit" onClick={() => handleOpenRegister()}>
+        <span className="header__divider">|</span>
+        <Button
+          color="inherit"
+          onClick={() => handleOpenRegister()}
+          className="header__button"
+        >
           Register
         </Button>
       </Toolbar>
