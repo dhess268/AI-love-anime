@@ -1,0 +1,12 @@
+.list__container {
+  display: flex;
+  margin-top: 5em;
+}
+
+.list__input {
+  margin-right: 1em;
+}
+
+.list__button {
+  align-self: center;
+}

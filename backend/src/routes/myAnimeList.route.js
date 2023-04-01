@@ -1,8 +1,4 @@
 const express = require('express');
-const passportJWT = require('passport-jwt');
-
-const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
 
 const router = express.Router();
 const myAnimeListController = require('../controllers/myAnimeList.controller');
@@ -16,7 +12,7 @@ router.get('/', myAnimeListController.get);
 router.post('/', myAnimeListController.create);
 
 /* PUT programming language */
-router.put('/:id', myAnimeListController.update);
+router.put('/', myAnimeListController.update);
 
 /* DELETE programming language */
 router.delete('/:id', myAnimeListController.remove);

@@ -27,9 +27,17 @@ export default function Home() {
     setIsLoggedIn(false);
   }
 
+  function changeToLoggedIn() {
+    setIsLoggedIn(true);
+  }
+
   return (
     <>
-      <Header loggedIn={isLoggedIn} logout={() => logout()} />
+      <Header
+        loggedIn={isLoggedIn}
+        logout={() => logout()}
+        afterLogin={() => changeToLoggedIn()}
+      />
       <AnimeListInput />
     </>
   );

@@ -4,6 +4,7 @@ const axios = require('axios');
 const helper = require('../utils/helper.util').default;
 const config = require('../configs/general.config');
 const Anime = require('../models/Anime');
+const User = require('../models/User');
 
 async function getMultiple(page = 1) {
   // const offset = helper.getOffset(page, config.listPerPage);
@@ -41,45 +42,10 @@ async function create(programmingLanguage) {
   // return { message };
 }
 
-async function update(id, programmingLanguage) {
-  // const result = await db.query(
-  //   `UPDATE programming_languages
-  //   SET name=?, released_year=?, githut_rank=?,
-  //   pypl_rank=?, tiobe_rank=?
-  //   WHERE id=?`,
-  //   [
-  //     programmingLanguage.name,
-  //     programmingLanguage.released_year,
-  //     programmingLanguage.githut_rank,
-  //     programmingLanguage.pypl_rank,
-  //     programmingLanguage.tiobe_rank,
-  //     id,
-  //   ]
-  // );
-  // let message = 'Error in updating programming language';
-  // if (result.affectedRows) {
-  //   message = 'Programming language updated successfully';
-  // }
-  // return { message };
-}
-
-async function remove(id) {
-  // const result = await db.query(
-  //   `DELETE FROM programming_languages WHERE id=?`,
-  //   [id]
-  // );
-  // let message = 'Error in deleting programming language';
-  // if (result.affectedRows) {
-  //   message = 'Programming language deleted successfully';
-  // }
-  // return { message };
-}
-
-// gets the entire MAL list and saves it to the user
-async function get(username, user) {
+// updates the user's anime list with a new MAL list
+async function update(username, user) {
   const queryParams = `/${username}/animelist?status=completed&fields=list_status&limit=100&sort=list_score`;
   let nextPage = config.myAnimeListUrl + queryParams;
-  const success = true;
   do {
     const result = await axios
       .get(nextPage, {
@@ -96,15 +62,22 @@ async function get(username, user) {
       return false;
     }
 
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { $unset: { anime: 1 } },
+      { new: true }
+    );
+
     result.data.forEach((entry) => {
       const newAnime = new Anime();
       newAnime.malId = entry.node.id;
       newAnime.title = entry.node.title;
       newAnime.score = entry.list_status.score;
-      newAnime
-        .save()
-        .then()
-        .catch((err) => console.log(err));
+      // Not saving it at the moment but can if something comes up?
+      // newAnime
+      //   .save()
+      //   .then()
+      //   .catch((err) => console.log(err));
       user.anime.push(newAnime);
     });
 
@@ -120,10 +93,20 @@ async function get(username, user) {
   return true;
 }
 
+async function remove(id) {
+  // const result = await db.query(
+  //   `DELETE FROM programming_languages WHERE id=?`,
+  //   [id]
+  // );
+  // let message = 'Error in deleting programming language';
+  // if (result.affectedRows) {
+  //   message = 'Programming language deleted successfully';
+  // }
+  // return { message };
+}
+
 module.exports = {
-  getMultiple,
-  remove,
   create,
   update,
-  get,
+  remove,
 };
