@@ -1,10 +1,11 @@
 import { Button, Container, TextField } from '@mui/material';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { axiosAuth } from '../utils/axios.util';
 
 import './AnimeListInput.css';
 
-export default function AnimeListInput() {
+export default function AnimeListInput({ setAnime }) {
   const [username, setUsername] = useState('');
 
   function handleGetAnimelist() {
@@ -12,7 +13,19 @@ export default function AnimeListInput() {
       .put(`http://localhost:3001/myanimelist?username=${username}`)
       .then((data) => {
         console.log(data);
+        setAnime(data.anime);
       });
+  }
+
+  async function getSavedAnime() {
+    try {
+      const anime = await axiosAuth
+        .get('/api/user/anime')
+        .then((data) => data.data.anime);
+      console.log(anime);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -32,6 +45,19 @@ export default function AnimeListInput() {
       >
         Submit
       </Button>
+      <Button
+        type="button"
+        color="success"
+        variant="contained"
+        onClick={() => getSavedAnime()}
+        className="list__button"
+      >
+        Get Anime from user
+      </Button>
     </Container>
   );
 }
+
+AnimeListInput.propTypes = {
+  setAnime: PropTypes.func,
+};

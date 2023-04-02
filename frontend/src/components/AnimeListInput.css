@@ -3,10 +3,11 @@
   margin-top: 5em;
 }
 
-.list__input {
+input.list__input {
   margin-right: 1em;
 }
 
-.list__button {
+button.list__button {
   align-self: center;
+  margin-left: 1em;
 }

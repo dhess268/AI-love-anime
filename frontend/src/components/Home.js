@@ -2,10 +2,12 @@ import { Fragment, useEffect, useState } from 'react';
 import AnimeListInput from './AnimeListInput';
 import Header from './Header';
 import { axiosAuth } from '../utils/axios.util';
+import UserAnimeList from './UserAnimeList';
 
 export default function Home() {
   const [user, setUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userAnime, setUserAnime] = useState({});
 
   useEffect(() => {
     if (!localStorage.getItem('token')) {
@@ -31,6 +33,10 @@ export default function Home() {
     setIsLoggedIn(true);
   }
 
+  function changeUserAnime(anime) {
+    setUserAnime(anime);
+  }
+
   return (
     <>
       <Header
@@ -38,7 +44,8 @@ export default function Home() {
         logout={() => logout()}
         afterLogin={() => changeToLoggedIn()}
       />
-      <AnimeListInput />
+      <AnimeListInput setAnime={(anime) => changeUserAnime(anime)} />
+      <UserAnimeList anime={userAnime} />
     </>
   );
 }
