@@ -7,7 +7,7 @@ import UserAnimeList from './UserAnimeList';
 export default function Home() {
   const [user, setUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userAnime, setUserAnime] = useState({});
+  const [userAnime, setUserAnime] = useState([]);
 
   useEffect(() => {
     if (!localStorage.getItem('token')) {

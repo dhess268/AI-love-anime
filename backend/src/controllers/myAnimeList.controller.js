@@ -19,11 +19,13 @@ async function update(req, res, next) {
       return res.status(400).send({ success: false });
     }
 
-    if (await myAnimeList.update(req.query.username, req.user)) {
-      return res.status(200).send({ success: true });
+    const result = await myAnimeList.update(req.query.username, req.user);
+
+    if (result.success) {
+      return res.status(200).send(result);
     }
 
-    return res.status(404).send({ success: false });
+    return res.status(404).send(result);
   } catch (err) {
     console.error(`Error while getting anime list`, err.message);
     next(err);

@@ -31,6 +31,9 @@ async function create(programmingLanguage) {
 async function update(username, user) {
   const queryParams = `/${username}/animelist?status=completed&fields=list_status&limit=100&sort=list_score`;
   let nextPage = config.myAnimeListUrl + queryParams;
+
+  const resultArray = []; // array of anime
+
   do {
     const result = await axios
       .get(nextPage, {
@@ -44,38 +47,38 @@ async function update(username, user) {
       });
 
     if (!result) {
-      return false;
+      return { success: false };
     }
 
-    await User.findOneAndUpdate(
-      { _id: user._id },
-      { $unset: { anime: 1 } },
-      { new: true }
-    );
-
-    result.data.forEach((entry) => {
-      const newAnime = new Anime();
-      newAnime.malId = entry.node.id;
-      newAnime.title = entry.node.title;
-      newAnime.score = entry.list_status.score;
-      // Not saving it at the moment but can if something comes up?
-      // newAnime
-      //   .save()
-      //   .then()
-      //   .catch((err) => console.log(err));
-      user.anime.push(newAnime);
-    });
+    resultArray.push(...result.data);
 
     // from mal api this is always a string or undefined
     nextPage = result.paging.next;
   } while (nextPage);
 
-  await user
+  // empties the user's array of anime before pushing in the new list
+  const newUser = await User.findOneAndUpdate(
+    { _id: user._id },
+    { $unset: { anime: 1 } },
+    { new: true }
+  ).then((nue) => nue);
+
+  resultArray.forEach((animeToAdd) => {
+    const newAnime = new Anime();
+
+    newAnime.malId = animeToAdd.node.id;
+    newAnime.title = animeToAdd.node.title;
+    newAnime.score = animeToAdd.list_status.score;
+
+    newUser.anime.push(newAnime);
+  });
+
+  const newList = await newUser
     .save()
-    .then()
+    .then((savedUser) => savedUser.anime)
     .catch((error) => console.log(error));
 
-  return true;
+  return { success: true, anime: newList };
 }
 
 async function remove(userId) {

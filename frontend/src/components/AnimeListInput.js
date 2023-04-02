@@ -12,8 +12,8 @@ export default function AnimeListInput({ setAnime }) {
     axiosAuth
       .put(`http://localhost:3001/myanimelist?username=${username}`)
       .then((data) => {
-        console.log(data);
-        setAnime(data.anime);
+        console.log(data.data.anime.length);
+        setAnime(data.data.anime);
       });
   }
 
@@ -22,7 +22,9 @@ export default function AnimeListInput({ setAnime }) {
       const anime = await axiosAuth
         .get('/api/user/anime')
         .then((data) => data.data.anime);
-      console.log(anime);
+
+      console.log(anime.length);
+      setAnime(anime);
     } catch (err) {
       console.log(err);
     }
