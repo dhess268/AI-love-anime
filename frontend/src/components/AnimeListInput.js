@@ -56,7 +56,6 @@ export default function AnimeListInput({ setAnime }) {
       >
         Get Anime from user
       </Button>
-      <Button>Get Anime Recommendations</Button>
     </Container>
   );
 }
