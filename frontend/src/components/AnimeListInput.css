@@ -1,4 +1,4 @@
-.list__container {
+div.list__container {
   display: flex;
   margin-top: 5em;
 }
