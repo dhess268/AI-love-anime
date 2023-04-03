@@ -11,3 +11,9 @@ button.list__button {
   align-self: center;
   margin-left: 1em;
 }
+
+.loading__div {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+}

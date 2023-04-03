@@ -43,7 +43,9 @@ export default function UserAnimeList({ anime }) {
       </TableContainer>
     </Container>
   ) : (
-    <div>Enter in new MAL username or get anime list from logged in user</div>
+    <div className="loading__div">
+      Enter in new MAL username or get anime list from logged in user
+    </div>
   );
 }
 
