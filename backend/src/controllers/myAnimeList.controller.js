@@ -1,20 +1,7 @@
 const myAnimeList = require('../services/myAnimeList.service');
 
 async function get(req, res, next) {
-  try {
-    if (!req.query?.username) {
-      return res.status(400).send({ success: false });
-    }
-
-    if (await myAnimeList.get(req.query.username, req.user)) {
-      return res.status(200).send({ success: true });
-    }
-
-    return res.status(404).send({ success: false });
-  } catch (err) {
-    console.error(`Error while getting anime list`, err.message);
-    next(err);
-  }
+  return res.status(404).send({ anime: req.user.anime });
 }
 
 async function create(req, res, next) {
@@ -28,9 +15,19 @@ async function create(req, res, next) {
 
 async function update(req, res, next) {
   try {
-    res.json(await myAnimeList.update(req.params.id, req.body));
+    if (!req.query?.username) {
+      return res.status(400).send({ success: false });
+    }
+
+    const result = await myAnimeList.update(req.query.username, req.user);
+
+    if (result.success) {
+      return res.status(200).send(result);
+    }
+
+    return res.status(404).send(result);
   } catch (err) {
-    console.error(`Error while updating programming language`, err.message);
+    console.error(`Error while getting anime list`, err.message);
     next(err);
   }
 }

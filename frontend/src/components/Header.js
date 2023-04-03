@@ -12,7 +12,7 @@ import { axiosAuth } from '../utils/axios.util';
 import LoginModal from '../Modals/LoginModal';
 import RegisterModal from '../Modals/RegisterModal';
 
-export default function Header({ loggedIn, logout }) {
+export default function Header({ loggedIn, logout, afterLogin }) {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const [modalError, setModalError] = useState('');
@@ -47,6 +47,7 @@ export default function Header({ loggedIn, logout }) {
         password,
       });
       localStorage.setItem('token', data.data.token);
+      afterLogin();
       handleCloseLogin();
     } catch (error) {
       console.log(error);
@@ -63,6 +64,7 @@ export default function Header({ loggedIn, logout }) {
       });
       // note: I want to synchronize my sever returns. For registration its email, id, token and login its just token
       localStorage.setItem('token', data.data.data.token);
+      afterLogin();
       handleCloseRegister();
     } catch (error) {
       console.log(error);
@@ -137,4 +139,5 @@ export default function Header({ loggedIn, logout }) {
 Header.propTypes = {
   loggedIn: PropTypes.bool,
   logout: PropTypes.func,
+  afterLogin: PropTypes.func,
 };
