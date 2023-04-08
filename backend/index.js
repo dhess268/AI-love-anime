@@ -49,7 +49,7 @@ app.use('/auth', authRouter);
 
 app.use('/api/user', requireSignin, userRouter);
 
-app.use('/api/gpt', gptRouter);
+app.use('/api/gpt', requireSignin, gptRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {

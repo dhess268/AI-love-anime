@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import AnimeListInput from './AnimeListInput';
 import Header from './Header';
 import { axiosAuth } from '../utils/axios.util';
@@ -10,7 +11,9 @@ export default function Home() {
   const [userAnime, setUserAnime] = useState([]);
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      localStorage.removeItem('token');
       return;
     }
     try {
@@ -44,8 +47,10 @@ export default function Home() {
         logout={() => logout()}
         afterLogin={() => changeToLoggedIn()}
       />
-      <AnimeListInput setAnime={(anime) => changeUserAnime(anime)} />
-      <UserAnimeList anime={userAnime} />
+
+      <Outlet />
+      {/* <AnimeListInput setAnime={(anime) => changeUserAnime(anime)} />
+      <UserAnimeList anime={userAnime} /> */}
     </>
   );
 }
