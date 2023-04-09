@@ -7,8 +7,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
+import { useSelector } from 'react-redux';
 
-export default function UserAnimeList({ anime }) {
+export default function UserAnimeList() {
+  const anime = useSelector((state) => state.user.anime || []);
+
   function renderAnime() {
     return anime.map((row) => (
       <TableRow
@@ -49,6 +52,4 @@ export default function UserAnimeList({ anime }) {
   );
 }
 
-UserAnimeList.propTypes = {
-  anime: PropTypes.array,
-};
+UserAnimeList.propTypes = {};

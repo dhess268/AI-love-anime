@@ -25,6 +25,9 @@ export const userSlice = createSlice({
       return updatedUser;
     },
     removeUser: () => initialState,
+    updateAnime: (state, action) => {
+      state.anime = action.payload;
+    },
     addAnime: (state, action) => {
       state.anime.push(action.payload);
     },
@@ -38,7 +41,7 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { updateUser, removeUser, addAnime, removeAnime } =
+export const { updateUser, removeUser, updateAnime, addAnime, removeAnime } =
   userSlice.actions;
 
 export default userSlice.reducer;

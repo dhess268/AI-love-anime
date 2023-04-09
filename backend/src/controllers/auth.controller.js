@@ -60,7 +60,7 @@ async function createUser(req, res, next) {
 
       const userWithToken = newUser.toJSON();
 
-      return res.status(201).send({ success: true, data: userWithToken });
+      return res.status(201).send({ success: true, user: userWithToken });
     })
     .catch((err) => res.status(500).send({ success: false }));
 }
