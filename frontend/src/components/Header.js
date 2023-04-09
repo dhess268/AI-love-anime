@@ -7,15 +7,19 @@ import IconButton from '@mui/material/IconButton';
 import './Header.css';
 
 import { PropTypes } from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { axiosAuth } from '../utils/axios.util';
 
 import LoginModal from '../Modals/LoginModal';
 import RegisterModal from '../Modals/RegisterModal';
+import { updateUser } from '../slices/UserSlice';
 
 export default function Header({ loggedIn, logout, afterLogin }) {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const [modalError, setModalError] = useState('');
+
+  const dispatch = useDispatch();
 
   function handleOpenLogin() {
     setOpenLogin(true);
@@ -47,6 +51,8 @@ export default function Header({ loggedIn, logout, afterLogin }) {
         password,
       });
       localStorage.setItem('token', data.data.token);
+      console.log(data.data);
+      dispatch(updateUser(data.data));
       afterLogin();
       handleCloseLogin();
     } catch (error) {
