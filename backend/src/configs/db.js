@@ -6,6 +6,7 @@ const keys = require('./keys');
 mongoose.set('strictQuery', true);
 
 const connectDB = async () => {
+  console.log(process.env.MONGODB_URL);
   try {
     mongoose.connect(keys.MONGODB_URI, {
       useNewUrlParser: true,
