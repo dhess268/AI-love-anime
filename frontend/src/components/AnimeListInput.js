@@ -13,12 +13,10 @@ export default function AnimeListInput() {
   const dispatch = useDispatch();
 
   function handleGetAnimelist() {
-    axiosAuth
-      .put(`http://localhost:3001/myanimelist?username=${username}`)
-      .then((data) => {
-        console.log(data.data.anime.length);
-        dispatch(updateAnime(data.data.anime));
-      });
+    axiosAuth.put(`/myanimelist?username=${username}`).then((data) => {
+      console.log(data.data.anime.length);
+      dispatch(updateAnime(data.data.anime));
+    });
   }
 
   async function getSavedAnime() {

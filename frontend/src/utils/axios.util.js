@@ -1,7 +1,7 @@
 import axios from 'axios';
 // Default config options
 const defaultOptions = {
-  baseURL: 'http://localhost:3001',
+  baseURL: 'https://ai-love-anime-production.up.railway.app',
   headers: {
     'Content-Type': 'application/json',
   },
