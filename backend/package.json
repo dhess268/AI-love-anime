@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "eslintConfig": {
     "extends": [
       "wesbos"
@@ -35,5 +32,8 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0"
+  },
+  "engines": {
+    "node": "16.18.1"
   }
 }
