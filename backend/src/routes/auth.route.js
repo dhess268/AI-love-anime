@@ -12,12 +12,12 @@ const requireSignin = passport.authenticate('local', { session: false });
 router.post('/login', requireSignin, authController.loginUser);
 
 // test route
-router.get('/login', sayHi);
+// router.get('/login', sayHi);
 
 router.post('/register', authController.createUser);
 
-function sayHi(req, res) {
-  res.send('hihi');
-}
+// function sayHi(req, res) {
+//   res.send('hihi');
+// }
 
 module.exports = router;
