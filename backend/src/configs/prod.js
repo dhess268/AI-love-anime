@@ -1,5 +1,5 @@
 module.exports = {
-  MONGODB_URI: process.env.MONGODB_URI,
+  MONGODB_URI: process.env.MONGODB_URL,
   TOKEN_SECRET: process.env.TOKEN_SECRET,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRES_IN: 86400 * 1,
