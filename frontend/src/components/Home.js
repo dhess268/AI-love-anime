@@ -1,51 +1,52 @@
-import { Fragment, useEffect, useState } from 'react';
-import AnimeListInput from './AnimeListInput';
+import { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
 import { axiosAuth } from '../utils/axios.util';
-import UserAnimeList from './UserAnimeList';
+import { updateUser, removeUser } from '../slices/UserSlice';
+import { login, logout } from '../slices/LoggedInSlice';
 
 export default function Home() {
-  const [user, setUser] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userAnime, setUserAnime] = useState([]);
+  const dispatch = useDispatch();
+
+  // const user = useSelector((state) => state.user);
+  const isLoggedIn = useSelector((state) => state.loggedIn.status);
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      localStorage.removeItem('token');
       return;
     }
     try {
       axiosAuth.get('/api/user').then((data) => {
-        setUser((prevUser) => ({ ...prevUser, ...data.data }));
-        setIsLoggedIn(true);
+        dispatch(updateUser(data.data.user));
+        dispatch(login());
       });
     } catch (error) {
       localStorage.removeItem('token');
     }
-  }, []);
+  }, [dispatch]);
 
-  function logout() {
+  function logoutUser() {
     localStorage.removeItem('token');
-    setUser({});
-    setIsLoggedIn(false);
+    dispatch(removeUser());
+    dispatch(logout());
   }
 
-  function changeToLoggedIn() {
-    setIsLoggedIn(true);
-  }
-
-  function changeUserAnime(anime) {
-    setUserAnime(anime);
-  }
+  // function changeUserAnime(anime) {
+  //   setUserAnime(anime);
+  // }
 
   return (
     <>
       <Header
         loggedIn={isLoggedIn}
-        logout={() => logout()}
-        afterLogin={() => changeToLoggedIn()}
+        logout={() => logoutUser()}
+        afterLogin={() => console.log('logged in')}
       />
-      <AnimeListInput setAnime={(anime) => changeUserAnime(anime)} />
-      <UserAnimeList anime={userAnime} />
+
+      <Outlet />
     </>
   );
 }

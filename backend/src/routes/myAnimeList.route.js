@@ -3,18 +3,13 @@ const express = require('express');
 const router = express.Router();
 const myAnimeListController = require('../controllers/myAnimeList.controller');
 
-/* GET programming languages. */
-// router.get('/', myAnimeListController.get);
-
+/* GET anime list. */
 router.get('/', myAnimeListController.get);
 
-/* POST programming language */
-router.post('/', myAnimeListController.create);
-
-/* PUT programming language */
+/* PUT aniem list */
 router.put('/', myAnimeListController.update);
 
-/* DELETE programming language */
+/* DELETE anime list */
 router.delete('/:id', myAnimeListController.remove);
 
 module.exports = router;

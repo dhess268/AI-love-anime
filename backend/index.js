@@ -5,6 +5,11 @@ const cors = require('cors');
 const connectDB = require('./src/configs/db');
 const User = require('./src/models/User');
 
+const myAnimeListRouter = require('./src/routes/myAnimeList.route');
+const authRouter = require('./src/routes/auth.route');
+const userRouter = require('./src/routes/user.route');
+const gptRouter = require('./src/routes/gpt.route');
+
 const app = express();
 
 app.use(express.json());
@@ -30,10 +35,6 @@ connectDB();
 // });
 // newUser.save();
 
-const myAnimeListRouter = require('./src/routes/myAnimeList.route');
-const authRouter = require('./src/routes/auth.route');
-const userRouter = require('./src/routes/user.route');
-
 app.use(cors());
 
 const requireSignin = passport.authenticate('jwt', { session: false });
@@ -47,6 +48,8 @@ app.use('/myAnimeList', requireSignin, myAnimeListRouter);
 app.use('/auth', authRouter);
 
 app.use('/api/user', requireSignin, userRouter);
+
+app.use('/api/gpt', requireSignin, gptRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {

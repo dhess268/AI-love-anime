@@ -1,31 +1,9 @@
 // const db = require('./db.service');
 const axios = require('axios');
 
-const helper = require('../utils/helper.util').default;
 const config = require('../configs/general.config');
 const Anime = require('../models/Anime');
 const User = require('../models/User');
-
-async function create(programmingLanguage) {
-  // const result = await db.query(
-  //   `INSERT INTO programming_languages
-  //   (name, released_year, githut_rank, pypl_rank, tiobe_rank)
-  //   VALUES
-  //   (?, ?, ?, ?, ?)`,
-  //   [
-  //     programmingLanguage.name,
-  //     programmingLanguage.released_year,
-  //     programmingLanguage.githut_rank,
-  //     programmingLanguage.pypl_rank,
-  //     programmingLanguage.tiobe_rank,
-  //   ]
-  // );
-  // let message = 'Error in creating programming language';
-  // if (result.affectedRows) {
-  //   message = 'Programming language created successfully';
-  // }
-  // return { message };
-}
 
 // updates the user's anime list with a new MAL list
 async function update(username, user) {
@@ -38,7 +16,7 @@ async function update(username, user) {
     const result = await axios
       .get(nextPage, {
         headers: {
-          'X-MAL-CLIENT-ID': '9dfc847e8513a45e3590df53abdfef46',
+          'X-MAL-CLIENT-ID': process.env.MAL_CLIENT_ID,
         },
       })
       .then((res) => res.data)
@@ -61,7 +39,7 @@ async function update(username, user) {
     { _id: user._id },
     { $unset: { anime: 1 } },
     { new: true }
-  ).then((nue) => nue);
+  ).then((data) => data);
 
   resultArray.forEach((animeToAdd) => {
     const newAnime = new Anime();
@@ -91,7 +69,6 @@ async function remove(userId) {
 }
 
 module.exports = {
-  create,
   update,
   remove,
 };

@@ -7,15 +7,20 @@ import IconButton from '@mui/material/IconButton';
 import './Header.css';
 
 import { PropTypes } from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { axiosAuth } from '../utils/axios.util';
 
 import LoginModal from '../Modals/LoginModal';
 import RegisterModal from '../Modals/RegisterModal';
+import { updateUser } from '../slices/UserSlice';
+import { login } from '../slices/LoggedInSlice';
 
 export default function Header({ loggedIn, logout, afterLogin }) {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const [modalError, setModalError] = useState('');
+
+  const dispatch = useDispatch();
 
   function handleOpenLogin() {
     setOpenLogin(true);
@@ -47,7 +52,9 @@ export default function Header({ loggedIn, logout, afterLogin }) {
         password,
       });
       localStorage.setItem('token', data.data.token);
-      afterLogin();
+      console.log(data.data);
+      dispatch(updateUser(data.data));
+      dispatch(login());
       handleCloseLogin();
     } catch (error) {
       console.log(error);
@@ -63,8 +70,9 @@ export default function Header({ loggedIn, logout, afterLogin }) {
         username: 'DEFAULT',
       });
       // note: I want to synchronize my sever returns. For registration its email, id, token and login its just token
-      localStorage.setItem('token', data.data.data.token);
-      afterLogin();
+      localStorage.setItem('token', data.data.user.token);
+      dispatch(updateUser(data.data));
+      dispatch(login());
       handleCloseRegister();
     } catch (error) {
       console.log(error);

@@ -4,15 +4,6 @@ async function get(req, res, next) {
   return res.status(404).send({ anime: req.user.anime });
 }
 
-async function create(req, res, next) {
-  try {
-    await myAnimeList.create(req.body);
-  } catch (err) {
-    console.error(`Error while creating programming language`, err.message);
-    next(err);
-  }
-}
-
 async function update(req, res, next) {
   try {
     if (!req.query?.username) {
@@ -43,7 +34,6 @@ async function remove(req, res, next) {
 
 module.exports = {
   get,
-  create,
   update,
   remove,
 };

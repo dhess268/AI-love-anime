@@ -1,19 +1,23 @@
 import { Button, Container, TextField } from '@mui/material';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+
 import { axiosAuth } from '../utils/axios.util';
 
 import './AnimeListInput.css';
+import { updateAnime } from '../slices/UserSlice';
 
-export default function AnimeListInput({ setAnime }) {
+export default function AnimeListInput() {
   const [username, setUsername] = useState('');
+  const dispatch = useDispatch();
 
   function handleGetAnimelist() {
     axiosAuth
       .put(`http://localhost:3001/myanimelist?username=${username}`)
       .then((data) => {
         console.log(data.data.anime.length);
-        setAnime(data.data.anime);
+        dispatch(updateAnime(data.data.anime));
       });
   }
 
@@ -24,7 +28,7 @@ export default function AnimeListInput({ setAnime }) {
         .then((data) => data.data.anime);
 
       console.log(anime.length);
-      setAnime(anime);
+      dispatch(updateAnime(anime));
     } catch (err) {
       console.log(err);
     }
@@ -61,5 +65,5 @@ export default function AnimeListInput({ setAnime }) {
 }
 
 AnimeListInput.propTypes = {
-  setAnime: PropTypes.func,
+  // setAnime: PropTypes.func,
 };
