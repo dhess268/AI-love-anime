@@ -15,7 +15,7 @@ import RegisterModal from '../Modals/RegisterModal';
 import { updateUser } from '../slices/UserSlice';
 import { login } from '../slices/LoggedInSlice';
 
-export default function Header({ loggedIn, logout, afterLogin }) {
+export default function Header({ loggedIn, logout }) {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const [modalError, setModalError] = useState('');
@@ -26,6 +26,7 @@ export default function Header({ loggedIn, logout, afterLogin }) {
     setOpenLogin(true);
     setModalError('');
   }
+
   function handleCloseLogin() {
     setOpenLogin(false);
     setModalError('');
@@ -147,5 +148,4 @@ export default function Header({ loggedIn, logout, afterLogin }) {
 Header.propTypes = {
   loggedIn: PropTypes.bool,
   logout: PropTypes.func,
-  afterLogin: PropTypes.func,
 };

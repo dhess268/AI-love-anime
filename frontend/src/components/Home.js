@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
+import Landing from './Landing';
 import { axiosAuth } from '../utils/axios.util';
 import { updateUser, removeUser } from '../slices/UserSlice';
 import { login, logout } from '../slices/LoggedInSlice';
@@ -38,6 +39,11 @@ export default function Home() {
   //   setUserAnime(anime);
   // }
 
+  function renderBody() {
+    // I'm keeping this in just in case I want to add contditional rendering based on login status here
+    return <Outlet />;
+  }
+
   return (
     <>
       <Header
@@ -45,8 +51,7 @@ export default function Home() {
         logout={() => logoutUser()}
         afterLogin={() => console.log('logged in')}
       />
-
-      <Outlet />
+      {renderBody()}
     </>
   );
 }

@@ -10,3 +10,7 @@ span.error__message {
   color: red;
   min-height: 1.5em;
 }
+
+.modal__body {
+  color: black;
+}
