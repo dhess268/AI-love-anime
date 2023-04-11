@@ -53,7 +53,6 @@ export default function Header({ loggedIn, logout }) {
         password,
       });
       localStorage.setItem('token', data.data.token);
-      console.log(data.data);
       dispatch(updateUser(data.data));
       dispatch(login());
       handleCloseLogin();
@@ -96,7 +95,9 @@ export default function Header({ loggedIn, logout }) {
           sx={{ mr: 2 }}
         />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          AI Love Anime
+          <a href="http://localhost:3000/" className="logo">
+            AI Love Anime
+          </a>
         </Typography>
         {!loggedIn ? (
           <>

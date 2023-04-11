@@ -7,9 +7,6 @@
       "logout": "/logout",
       "registration": "/auth/register",
       "myAnimeList": "/myanimelist"
-    },
-    "gh-pages": {
-      "tests": "/how-to-take-a-test/assets/mock/api/tests.json"
     }
   }
 }

@@ -6,6 +6,7 @@ import Container from '@mui/material/Container';
 import './Landing.css';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import LoginModal from '../Modals/LoginModal';
 
 import { updateUser } from '../slices/UserSlice';
@@ -17,6 +18,8 @@ export default function Landing() {
   const [modalError, setModalError] = useState('');
 
   const isLoggedIn = useSelector((state) => state.loggedIn.status);
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -37,7 +40,6 @@ export default function Landing() {
         password,
       });
       localStorage.setItem('token', data.data.token);
-      console.log(data.data);
       dispatch(updateUser(data.data));
       dispatch(login());
       handleCloseLogin();
@@ -51,7 +53,7 @@ export default function Landing() {
     if (!isLoggedIn) {
       handleOpenLogin();
     } else {
-      console.log('navigate to generation page');
+      navigate('/generate');
     }
   }
 

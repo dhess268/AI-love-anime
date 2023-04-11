@@ -16,3 +16,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* the loading icon library wasn't working as intended so undefined will be the loading spinner */
+.undefined {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

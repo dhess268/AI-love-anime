@@ -1,6 +1,5 @@
 import { Button, Container, TextField } from '@mui/material';
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 import { axiosAuth } from '../utils/axios.util';
@@ -14,26 +13,23 @@ export default function AnimeListInput() {
 
   function handleGetAnimelist() {
     axiosAuth.put(`/myanimelist?username=${username}`).then((data) => {
-      console.log(data.data.anime.length);
       dispatch(updateAnime(data.data.anime));
     });
   }
 
-  async function getSavedAnime() {
-    try {
-      const anime = await axiosAuth
-        .get('/api/user/anime')
-        .then((data) => data.data.anime);
-
-      console.log(anime.length);
-      dispatch(updateAnime(anime));
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  // async function getSavedAnime() {
+  //   try {
+  //     const anime = await axiosAuth
+  //       .get('/api/user/anime')
+  //       .then((data) => data.data.anime);
+  //     dispatch(updateAnime(anime));
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   return (
-    <Container maxWidth="sm" className="list__container">
+    <div className="list__container">
       <TextField
         placeholder="MyAnimeList username"
         variant="outlined"
@@ -49,16 +45,7 @@ export default function AnimeListInput() {
       >
         Submit
       </Button>
-      <Button
-        type="button"
-        color="success"
-        variant="contained"
-        onClick={() => getSavedAnime()}
-        className="list__button"
-      >
-        Get Anime from user
-      </Button>
-    </Container>
+    </div>
   );
 }
 

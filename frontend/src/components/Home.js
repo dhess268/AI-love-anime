@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './Header';
-import Landing from './Landing';
 import { axiosAuth } from '../utils/axios.util';
 import { updateUser, removeUser } from '../slices/UserSlice';
 import { login, logout } from '../slices/LoggedInSlice';
