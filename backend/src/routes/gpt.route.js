@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
     ],
   });
   console.log(completion.data.choices[0].message);
-  res.status(200).send(completion.data.choices[0].message);
+  res.status(200).send(JSON.parse(completion.data.choices[0].message.content));
 });
 
 module.exports = router;
