@@ -18,3 +18,13 @@ button.list__button {
   display: flex;
   justify-content: center;
 }
+
+.list__input {
+  background: white;
+  color: white;
+}
+
+.list__area {
+  background-color: white;
+  color: black;
+}

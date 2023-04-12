@@ -19,25 +19,20 @@ export default function AnimeListInput() {
     });
   }
 
-  // async function getSavedAnime() {
-  //   try {
-  //     const anime = await axiosAuth
-  //       .get('/api/user/anime')
-  //       .then((data) => data.data.anime);
-  //     dispatch(updateAnime(anime));
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
-
   return (
     <div className="list__container">
-      <TextField
-        placeholder="MyAnimeList username"
-        variant="outlined"
-        onChange={(e) => setUsername(e.target.value)}
-        className="list__input"
-      />
+      <section className="list__area">
+        <TextField
+          placeholder="MyAnimeList username"
+          variant="outlined"
+          onChange={(e) => setUsername(e.target.value)}
+          className="list__input"
+          style={{
+            backgroundColor: 'white',
+          }}
+        />
+      </section>
+
       <Button
         type="button"
         color="success"

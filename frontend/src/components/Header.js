@@ -8,6 +8,7 @@ import './Header.css';
 
 import { PropTypes } from 'prop-types';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { axiosAuth } from '../utils/axios.util';
 
 import LoginModal from '../Modals/LoginModal';
@@ -19,6 +20,8 @@ export default function Header({ loggedIn, logout }) {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const [modalError, setModalError] = useState('');
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -95,9 +98,7 @@ export default function Header({ loggedIn, logout }) {
           sx={{ mr: 2 }}
         />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <a href="http://localhost:3000/" className="logo">
-            AI Love Anime
-          </a>
+          AI Love Anime
         </Typography>
         {!loggedIn ? (
           <>

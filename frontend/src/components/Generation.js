@@ -1,4 +1,5 @@
 import {
+  Button,
   Container,
   FormControl,
   FormControlLabel,
@@ -16,6 +17,7 @@ import AnimeListInput from './AnimeListInput';
 import UserAnimeList from './UserAnimeList';
 
 import './Generation.css';
+import { axiosAuth } from '../utils/axios.util';
 
 export default function Generation() {
   const [genres, setGenres] = useState([]);
@@ -23,7 +25,7 @@ export default function Generation() {
   const [isLoading, setisLoading] = useState(true);
 
   const isLoggedIn = useSelector((state) => state.loggedIn.status);
-  const anime = useSelector((state) => state.anime.myanimelist);
+  const selected = useSelector((state) => state.anime.selected);
 
   useEffect(() => {
     axios
@@ -44,6 +46,11 @@ export default function Generation() {
       />
     ));
   }
+
+  function handleGenerate() {
+    axiosAuth.post('/api/gpt', { genre: selectedGenre, list: selected });
+  }
+
   // reminder: add conditional to also display anime that have been recommended if available
   return (
     <Container maxWidth="md">
@@ -108,6 +115,12 @@ export default function Generation() {
             </FormControl>
             <AnimeListInput />
             <UserAnimeList />
+          </section>
+
+          <section>
+            <Button type="button" onClick={() => handleGenerate()}>
+              Generate
+            </Button>
           </section>
         </>
       ) : (
