@@ -48,7 +48,7 @@ export default function Generation() {
   }
 
   function handleGenerate() {
-    axiosAuth('/api/gpt', { genre: selectedGenre, list: selected });
+    axiosAuth.post('/api/gpt', { genre: selectedGenre, list: selected });
   }
 
   // reminder: add conditional to also display anime that have been recommended if available

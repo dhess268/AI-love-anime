@@ -9,18 +9,20 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-router.get('/', async (req, res) => {
-  const { anime } = req.user;
-  const animeHundredArray = anime.slice(0, 99);
-  const seenAnimeString = anime.reduce(
-    (str, curr) => `${str + curr.title},`,
-    ''
-  );
-  const reccAnimeString = animeHundredArray.reduce(
+router.post('/', async (req, res) => {
+  // const animeHundredArray = anime.slice(0, 99);
+  // const seenAnimeString = anime.reduce(
+  //   (str, curr) => `${str + curr.title},`,
+  //   ''
+  // );
+
+  const { genre, list } = req.body;
+
+  const reccAnimeString = list.reduce(
     (str, curr) => `${str + curr.title}, `,
     ''
   );
-  console.log(reccAnimeString);
+
   const completion = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
     temperature: 0.7,
@@ -32,7 +34,7 @@ router.get('/', async (req, res) => {
       },
       {
         role: 'user',
-        content: `Based on the following list of anime, please recommend 3 new anime not on that list to watch. If you do not recognize an anime in the list, please  ignore it when recommending anime. I want you to recommend anime using the romanji title. DO NOT recommend anime the user has seen already .The user has already seen the anime in this list and all the anime in the list are using romanji titles: ${reccAnimeString}. Please send your response in the following format: { recommendations: [{title: romanji anime title, explaination: why they would like the anime, id: myanimelist ID }]}`,
+        content: `Based on the following list of anime and genre from myanimelist, please recommend 3 new anime not on that list to watch. If you do not recognize an anime in the list, please  ignore it when recommending anime. I want you to recommend anime using the romanji title. DO NOT recommend anime the user has seen already. The user wants an anime in the following genre: ${genre}. The user has already seen the anime in this list and all the anime in the list are using romanji titles: ${reccAnimeString}. Please send your response in the following format and make sure to explain your reasoning behind the recommendations: { recommendations: [{title: romanji anime title, explaination: why they would like the anime based on their list of anime, id: myanimelist ID }]}`,
       },
     ],
   });
