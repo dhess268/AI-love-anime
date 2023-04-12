@@ -24,6 +24,7 @@ export default function Generation() {
   const [selectedGenre, setSelectedGenre] = useState('Any');
   const [isLoading, setisLoading] = useState(true);
 
+  const [recommendations, setRecommendations] = useState([]);
   // const isLoggedIn = useSelector((state) => state.loggedIn.status);
   const selected = useSelector((state) => state.anime.selected);
 
@@ -48,12 +49,26 @@ export default function Generation() {
   }
 
   function handleGenerate() {
-    axiosAuth.post('/api/gpt', { genre: selectedGenre, list: selected });
+    axiosAuth
+      .post('/api/gpt', { genre: selectedGenre, list: selected })
+      .then((data) => {
+        console.log(data.data);
+        setRecommendations(data.data.recommendations);
+      });
+  }
+
+  function renderRecommendations() {
+    return recommendations.map((anime) => (
+      <div key={`${anime.title}100`}>
+        <span>{anime.title}</span>
+        <p>{anime.explaination}</p>
+      </div>
+    ));
   }
 
   // reminder: add conditional to also display anime that have been recommended if available
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ marginBottom: '5em' }}>
       <h1>Let's generate your next anime to watch.</h1>
       {!isLoading ? (
         <>
@@ -117,10 +132,20 @@ export default function Generation() {
             <UserAnimeList />
           </section>
 
-          <section>
-            <Button type="button" onClick={() => handleGenerate()}>
-              Generate
+          <section className="generate-button__container">
+            <Button
+              type="button"
+              color="success"
+              variant="contained"
+              disabled={!!selectedGenre && selected.length < 1}
+              onClick={() => handleGenerate()}
+            >
+              Generate Recommendations
             </Button>
+          </section>
+          <section>
+            <h2>Recommendations</h2>
+            {renderRecommendations()}
           </section>
         </>
       ) : (
