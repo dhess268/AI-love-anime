@@ -24,7 +24,7 @@ export default function Generation() {
   const [selectedGenre, setSelectedGenre] = useState('Any');
   const [isLoading, setisLoading] = useState(true);
 
-  const isLoggedIn = useSelector((state) => state.loggedIn.status);
+  // const isLoggedIn = useSelector((state) => state.loggedIn.status);
   const selected = useSelector((state) => state.anime.selected);
 
   useEffect(() => {

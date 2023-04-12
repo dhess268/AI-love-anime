@@ -29,9 +29,9 @@ async function loginUser(req, res, next) {
 
 async function createUser(req, res, next) {
   // validate frontend input
-  const { email, username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!utils.validateRegistrationInputs(email, username, password)) {
+  if (!utils.validateRegistrationInputs(email, password)) {
     return res.status(400).send({ success: false });
   }
 
@@ -43,7 +43,7 @@ async function createUser(req, res, next) {
   }
 
   // create new user document from schema
-  const newUser = new User({ email, username });
+  const newUser = new User({ email });
 
   // call password creation function from model
   newUser.setPassword(password);
