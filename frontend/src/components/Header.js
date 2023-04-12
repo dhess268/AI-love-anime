@@ -21,7 +21,7 @@ export default function Header({ loggedIn, logout }) {
   const [openRegister, setOpenRegister] = useState(false);
   const [modalError, setModalError] = useState('');
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -70,7 +70,6 @@ export default function Header({ loggedIn, logout }) {
       const data = await axiosAuth.post('/auth/register', {
         email,
         password,
-        username: 'DEFAULT',
       });
       // note: I want to synchronize my sever returns. For registration its email, id, token and login its just token
       localStorage.setItem('token', data.data.user.token);

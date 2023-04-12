@@ -11,8 +11,8 @@ function emptyOrRows(rows) {
   return rows;
 }
 
-function validateRegistrationInputs(email, username, password) {
-  return email && password && username;
+function validateRegistrationInputs(email, password) {
+  return email && password;
 }
 
 module.exports = {
