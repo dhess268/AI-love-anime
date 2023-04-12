@@ -1,5 +1,6 @@
 button.modal__button {
   margin-top: .5em;
+  margin-right: 1em;
 }
 
 button.modal__button:first-of-type {

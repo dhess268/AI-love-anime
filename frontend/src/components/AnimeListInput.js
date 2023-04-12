@@ -19,6 +19,13 @@ export default function AnimeListInput() {
     });
   }
 
+  function handleDemo() {
+    axiosAuth.put(`/myanimelist?username=degeneratedodan`).then((data) => {
+      dispatch(updateAnime(data.data.anime));
+      dispatch(updateMyanimelist(data.data.anime));
+    });
+  }
+
   return (
     <div className="list__container">
       <section className="list__area">
@@ -41,6 +48,15 @@ export default function AnimeListInput() {
         className="list__button"
       >
         Submit
+      </Button>
+      <Button
+        type="button"
+        color="success"
+        variant="contained"
+        onClick={() => handleDemo()}
+        className="list__button"
+      >
+        Use my list for demo purposes
       </Button>
     </div>
   );
