@@ -44,7 +44,9 @@ export default function UserAnimeList() {
           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
           <TableCell component="th" scope="row">
-            {row.title}
+            <a href={`https://myanimelist.net/anime/${row.malId}`}>
+              {row.title}
+            </a>
           </TableCell>
           <TableCell align="right">
             <IconButton
