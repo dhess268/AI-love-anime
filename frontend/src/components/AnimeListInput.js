@@ -1,4 +1,4 @@
-import { Button, Container, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -6,6 +6,7 @@ import { axiosAuth } from '../utils/axios.util';
 
 import './AnimeListInput.css';
 import { updateAnime } from '../slices/UserSlice';
+import { updateMyanimelist } from '../slices/AnimeSlice';
 
 export default function AnimeListInput() {
   const [username, setUsername] = useState('');
@@ -14,6 +15,7 @@ export default function AnimeListInput() {
   function handleGetAnimelist() {
     axiosAuth.put(`/myanimelist?username=${username}`).then((data) => {
       dispatch(updateAnime(data.data.anime));
+      dispatch(updateMyanimelist(data.data.anime));
     });
   }
 

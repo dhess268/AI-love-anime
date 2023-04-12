@@ -6,11 +6,15 @@ import {
   Radio,
   RadioGroup,
 } from '@mui/material';
+
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Triangle } from 'react-loader-spinner';
 import { useSelector } from 'react-redux';
+
 import AnimeListInput from './AnimeListInput';
+import UserAnimeList from './UserAnimeList';
+
 import './Generation.css';
 
 export default function Generation() {
@@ -19,6 +23,7 @@ export default function Generation() {
   const [isLoading, setisLoading] = useState(true);
 
   const isLoggedIn = useSelector((state) => state.loggedIn.status);
+  const anime = useSelector((state) => state.anime.myanimelist);
 
   useEffect(() => {
     axios
@@ -85,15 +90,16 @@ export default function Generation() {
                 row
                 aria-labelledby="anime-label"
                 name="genre-buttons"
+                defaultValue="yes"
               >
                 <FormControlLabel
-                  key="0"
+                  key="yes"
                   value="yes"
                   control={<Radio />}
                   label="Use list from my existing myanimelist account"
                 />
                 <FormControlLabel
-                  key="0"
+                  key="no"
                   value="no"
                   control={<Radio />}
                   label="Create a list here"
@@ -101,6 +107,7 @@ export default function Generation() {
               </RadioGroup>
             </FormControl>
             <AnimeListInput />
+            <UserAnimeList />
           </section>
         </>
       ) : (
