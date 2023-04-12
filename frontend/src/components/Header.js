@@ -15,7 +15,7 @@ import RegisterModal from '../Modals/RegisterModal';
 import { updateUser } from '../slices/UserSlice';
 import { login } from '../slices/LoggedInSlice';
 
-export default function Header({ loggedIn, logout, afterLogin }) {
+export default function Header({ loggedIn, logout }) {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const [modalError, setModalError] = useState('');
@@ -26,6 +26,7 @@ export default function Header({ loggedIn, logout, afterLogin }) {
     setOpenLogin(true);
     setModalError('');
   }
+
   function handleCloseLogin() {
     setOpenLogin(false);
     setModalError('');
@@ -52,7 +53,6 @@ export default function Header({ loggedIn, logout, afterLogin }) {
         password,
       });
       localStorage.setItem('token', data.data.token);
-      console.log(data.data);
       dispatch(updateUser(data.data));
       dispatch(login());
       handleCloseLogin();
@@ -95,7 +95,9 @@ export default function Header({ loggedIn, logout, afterLogin }) {
           sx={{ mr: 2 }}
         />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          AI Love Anime
+          <a href="http://localhost:3000/" className="logo">
+            AI Love Anime
+          </a>
         </Typography>
         {!loggedIn ? (
           <>
@@ -147,5 +149,4 @@ export default function Header({ loggedIn, logout, afterLogin }) {
 Header.propTypes = {
   loggedIn: PropTypes.bool,
   logout: PropTypes.func,
-  afterLogin: PropTypes.func,
 };

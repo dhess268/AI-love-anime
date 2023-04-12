@@ -40,6 +40,7 @@ export default function RegisterModal({
       onClose={() => onClose()}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      className="modal__body"
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">

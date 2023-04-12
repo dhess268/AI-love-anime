@@ -6,3 +6,11 @@
   margin: 0 1em 6px 1em;
   font-size: 1.25em;
 }
+
+a.logo {
+  text-decoration: none;
+}
+
+a.logo:visited {
+  color: white;
+}

@@ -1,10 +1,11 @@
 div.list__container {
   display: flex;
-  margin-top: 5em;
+  margin-top: 2em;
+  justify-content: flex-start;
 }
 
 input.list__input {
-  margin-right: 1em;
+  margin-right: 5em;
 }
 
 button.list__button {
