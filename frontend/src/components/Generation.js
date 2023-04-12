@@ -10,7 +10,7 @@ import {
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Triangle } from 'react-loader-spinner';
+import { ProgressBar, Triangle } from 'react-loader-spinner';
 import { useSelector } from 'react-redux';
 
 import AnimeListInput from './AnimeListInput';
@@ -23,9 +23,9 @@ export default function Generation() {
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState('Any');
   const [isLoading, setisLoading] = useState(true);
-
+  const [isGenerating, setIsGenerating] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
-  // const isLoggedIn = useSelector((state) => state.loggedIn.status);
+  const isLoggedIn = useSelector((state) => state.loggedIn.status);
   const selected = useSelector((state) => state.anime.selected);
 
   useEffect(() => {
@@ -49,19 +49,34 @@ export default function Generation() {
   }
 
   function handleGenerate() {
-    axiosAuth
-      .post('/api/gpt', { genre: selectedGenre, list: selected })
-      .then((data) => {
-        console.log(data.data);
-        setRecommendations(data.data.recommendations);
-      });
+    setIsGenerating(true);
+    try {
+      axiosAuth
+        .post('/api/gpt', { genre: selectedGenre, list: selected })
+        .then((data) => {
+          console.log(data.data);
+          if (typeof data.data === 'string') {
+            const startIndex = data.data.indexOf('{');
+            const endIndex = data.data.lastIndexOf('}');
+            const jsonString = data.data.slice(startIndex, endIndex + 1);
+            const js = JSON.parse(jsonString);
+            setRecommendations(js.recommendations);
+          } else {
+            setRecommendations(data.data.recommendations);
+          }
+          setIsGenerating(false);
+        });
+    } catch (error) {
+      alert('An error has occured please try to generate again');
+      setIsGenerating(false);
+    }
   }
 
   function renderRecommendations() {
     return recommendations.map((anime) => (
-      <div key={`${anime.title}100`}>
-        <span>{anime.title}</span>
-        <p>{anime.explaination}</p>
+      <div key={`${anime.title}100`} className="recommendation">
+        <span>Anime Name: {anime.title}</span>
+        <p>{anime.explanation}</p>
       </div>
     ));
   }
@@ -100,11 +115,11 @@ export default function Generation() {
           <section>
             <h2>Using your anime taste to generate new anime</h2>
 
-            <h3>
+            {/* <h3>
               Do you want to use anime from your myanimelist account or search
               manually?
-            </h3>
-            <FormControl>
+            </h3> */}
+            {/* <FormControl>
               <FormLabel id="anime-label" sx={{ color: 'white' }}>
                 Which method?
               </FormLabel>
@@ -127,22 +142,44 @@ export default function Generation() {
                   label="Create a list here"
                 />
               </RadioGroup>
-            </FormControl>
+            </FormControl> */}
             <AnimeListInput />
             <UserAnimeList />
           </section>
 
           <section className="generate-button__container">
-            <Button
-              type="button"
-              color="success"
-              variant="contained"
-              disabled={!!selectedGenre && selected.length < 1}
-              onClick={() => handleGenerate()}
-            >
-              Generate Recommendations
-            </Button>
+            {isLoggedIn ? (
+              <Button
+                type="button"
+                color="success"
+                variant="contained"
+                disabled={!!selectedGenre && selected.length < 1}
+                onClick={() => handleGenerate()}
+              >
+                Generate Recommendations
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                color="success"
+                variant="contained"
+                disabled
+              >
+                Log in to start
+              </Button>
+            )}
           </section>
+          {isGenerating && (
+            <ProgressBar
+              height="80"
+              width="80"
+              ariaLabel="progress-bar-loading"
+              wrapperStyle={{}}
+              wrapperClass="progress-bar-wrapper"
+              borderColor="#F4442E"
+              barColor="#51E5FF"
+            />
+          )}
           <section>
             <h2>Recommendations</h2>
             {renderRecommendations()}

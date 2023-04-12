@@ -1,7 +1,7 @@
 import axios from 'axios';
 // Default config options
 const defaultOptions = {
-  baseURL: 'https://ai-love-anime-production.up.railway.app',
+  baseURL: 'http://localhost:3001/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -16,3 +16,5 @@ axiosAuth.interceptors.request.use((config) => {
   config.headers.Authorization = token ? `Bearer ${token}` : '';
   return config;
 });
+
+// https://ai-love-anime-production.up.railway.app

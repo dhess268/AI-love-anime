@@ -86,6 +86,21 @@ export default function Header({ loggedIn, logout }) {
     }
   }
 
+  async function handleDemo() {
+    try {
+      const data = await axiosAuth.post('/auth/login', {
+        email: 'test',
+        password: 'test',
+      });
+      localStorage.setItem('token', data.data.token);
+      dispatch(updateUser(data.data));
+      dispatch(login());
+    } catch (error) {
+      console.log(error);
+      setModalError('Incorrect Email or Password. Please try again.');
+    }
+  }
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -101,6 +116,14 @@ export default function Header({ loggedIn, logout }) {
         </Typography>
         {!loggedIn ? (
           <>
+            <Button
+              color="inherit"
+              className="modal__button"
+              onClick={() => handleDemo()}
+            >
+              Demo Login
+            </Button>
+            <span className="header__divider">|</span>
             <Button
               color="inherit"
               onClick={() => handleOpenLogin()}

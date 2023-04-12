@@ -1,6 +1,10 @@
 import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import { PropTypes } from 'prop-types';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { login } from '../slices/LoggedInSlice';
+import { updateUser } from '../slices/UserSlice';
+import { axiosAuth } from '../utils/axios.util';
 import './LoginModal.css';
 
 export default function LoginModal({
@@ -13,8 +17,25 @@ export default function LoginModal({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const dispatch = useDispatch();
+
   function handleSubmitClick() {
     handleLogin(email, password);
+  }
+
+  async function handleDemo() {
+    try {
+      const data = await axiosAuth.post('/auth/login', {
+        email: 'test',
+        password: 'test',
+      });
+      localStorage.setItem('token', data.data.token);
+      dispatch(updateUser(data.data));
+      dispatch(login());
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -70,6 +91,14 @@ export default function LoginModal({
             onClick={() => handleClose()}
           >
             Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className="modal__button"
+            onClick={() => handleDemo()}
+          >
+            Demo Login
           </Button>
         </div>
       </Box>

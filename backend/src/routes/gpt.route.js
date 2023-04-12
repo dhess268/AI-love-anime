@@ -34,12 +34,12 @@ router.post('/', async (req, res) => {
       },
       {
         role: 'user',
-        content: `Based on the following list of anime and genre from myanimelist, please recommend 3 new anime not on that list to watch. If you do not recognize an anime in the list, please  ignore it when recommending anime. I want you to recommend anime using the romanji title. DO NOT recommend anime the user has seen already. The user wants an anime in the following genre: ${genre}. The user has already seen the anime in this list and all the anime in the list are using romanji titles: ${reccAnimeString}. Please send your response in the following format and make sure to explain your reasoning behind the recommendations: { recommendations: [{title: romanji anime title, explaination: why they would like the anime based on their list of anime, id: myanimelist ID }]}`,
+        content: `Based on the following list of anime and genre from myanimelist, please recommend 3 new anime not on that list to watch. If you do not recognize an anime in the list, please  ignore it when recommending anime. I want you to recommend anime using the romanji title. DO NOT recommend anime the user has seen already. The user wants an anime in the following genre: ${genre}. The user has already seen the anime in this list and all the anime in the list are using romanji titles: ${reccAnimeString}. Please send JSON only and make sure to explain your reasoning behind the recommendations. The JSON format to follow is: { recommendations: [{title: romanji anime title, explaination: why they would like the anime based on their list of anime, id: myanimelist ID }]}`,
       },
     ],
   });
-  console.log(completion.data.choices[0].message);
-  res.status(200).send(JSON.parse(completion.data.choices[0].message.content));
+  console.log(completion.data.choices[0]);
+  res.status(200).send(completion.data.choices[0].message.content);
 });
 
 module.exports = router;
