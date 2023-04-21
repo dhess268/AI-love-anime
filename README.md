@@ -2,7 +2,7 @@
 
 [AI Love Anime](https://ai-love-anime.vercel.app/) is an anime recommendation site that provides AI-generated anime recommendations to users. With this app, users can get personalized anime recommendations based on their existing anime list and desired genre.
 
-![](image 1 goes here - can be of the main page of the site)
+![](images/image1.png)
 
 
 
@@ -23,13 +23,11 @@
 
 - #### Select Genre and Seen Anime
 
-![](image 2 goes here - can be of genres and seen anime)
+![](images/image2.png)
 
 The anime in the user's list are sorted by the user's score given on myanimelist
 
-- #### Reserve listings (CRUD feature), with costs calculated dynamically
-
-![](images/reservation.png)
+![](images/image5.png)
 
 Users (who are logged in) can receive recommendations based on their entered criteria. The user will receive the name of the anime and also a description of why the user would like the anime based on their genre chosen and anime already watched.
 
@@ -37,7 +35,7 @@ Users (who are logged in) can receive recommendations based on their entered cri
 
 - #### See existing list of anime from myanimelist account
 
-![](images/ratings.png)
+![](images/image3.png)
 
 Users can only read their list and cannot change it. The list is arranged into a table by mapping the anime received from the myanimelist API. Clicking the buttons on the table row will either add the anime or remove the anime from the selected list used in recommendations.
 
@@ -86,9 +84,9 @@ Note that only 10 anime are shown from the list at a time and the user may pagin
 Pagination is handled through react state with the current page being saved to state.
 
 
-- #### 
+- #### Sample recommendation output
 
-![](images/max_100.png)
+![](images/image4.png)
 
 ## Future Features:
 - Viewing recommendations given to other users
